@@ -19,12 +19,10 @@ params.outdir = 'results'
 workflow {
     
     read_pairs_ch = channel.fromFilePairs( params.reads, checkIfExists: true ) 
-    CHECK_STRANDNESS( read_pairs_ch, params.reference_cdna_ensembl, params.reference_annotation_ensembl )
+    CHECK_STRANDNESS( read_pairs_ch, params.reference_cdna, params.reference_annotation_ensembl )
     FASTP( read_pairs_ch )
     GENERATE_DECOY_TRANSCIPTROME( params.reference_genome, params.reference_cdna )
     SALMON_INDEX_REFERENCE( GENERATE_DECOY_TRANSCIPTROME.out.decoy, GENERATE_DECOY_TRANSCIPTROME.out.gentrome )
-    SALMON_ALIGN( CHECK_STRANDNESS.out, FASTP.out.sample_trimmed, SALMON_INDEX_REFERENCE.out, params.reference_annotation )
-    SAMTOOLS( STAR_ALIGN.out.sample_sam )
-    CUFFLINKS( CHECK_STRANDNESS.out, SAMTOOLS.out.sample_bam, params.reference_annotation )
+    SALMON_ALIGN_QUANT( CHECK_STRANDNESS.out, FASTP.out.sample_trimmed, SALMON_INDEX_REFERENCE.out, params.reference_annotation )
 }
 
