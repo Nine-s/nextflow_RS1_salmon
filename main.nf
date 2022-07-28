@@ -4,8 +4,6 @@ nextflow.enable.dsl = 2
 include { CHECK_STRANDNESS } from './modules/check_strandness.nf'
 include { FASTP } from './modules/fastp'
 include { GENERATE_DECOY_TRANSCIPTROME ; SALMON_INDEX_REFERENCE ; SALMON_ALIGN_QUANT } from './modules/salmon.nf'
-include { SAMTOOLS } from './modules/samtools'
-include { CUFFLINKS } from './modules/cufflinks'
 
 log.info """\
          RNAseq differential analysis using NextFlow 
